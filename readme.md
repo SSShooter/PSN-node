@@ -1,7 +1,7 @@
 ## How to deploy
 
 - Complete `.env.sample` and rename to `.env`
-- Complete `redis.sample.js` and rename to `redis.js`
+- `npm run start`
 
 ## How to get NPSSO
 
