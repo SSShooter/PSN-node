@@ -1,5 +1,5 @@
 import { getTrophyTitles } from '../psnAPI/trophy.js'
-import redisClient from './redis.js'
+import redisClient from '../redis.js'
 export default async function handler(request, response) {
   await redisClient.connect()
   const data = await getTrophyTitles(request.query)
