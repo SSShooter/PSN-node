@@ -1,4 +1,4 @@
-import { getProfile } from './psnAPI/user.js'
+import { getProfile } from '../psnAPI/user.js'
 import redisClient from '../redis.js'
 export default async function handler(request, response) {
   await redisClient.connect()

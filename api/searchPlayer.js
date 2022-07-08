@@ -1,4 +1,4 @@
-import { searchPlayer } from './psnAPI/search.js'
+import { searchPlayer } from '../psnAPI/search.js'
 import redisClient from '../redis.js'
 export default async function handler(request, response) {
   await redisClient.connect()
