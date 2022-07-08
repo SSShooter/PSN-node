@@ -9,6 +9,10 @@ P.S. If you don't have a redis instance, try free database (memory limit 30MB) o
 
 First Login your Sony account, then access https://ca.account.sony.com/api/v1/ssocookie
 
+## serverless function
+
+Files in `api` folder is use for serverless function. If you use free database, it may not work well due to insufficient connection.
+
 ## Thanks
 
 - https://github.com/andshrew/PlayStation-Trophies
