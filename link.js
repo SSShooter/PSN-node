@@ -37,10 +37,21 @@ export const link = axios.create({
 
 link.interceptors.request.use(
   async function (config) {
+    // use redis to cache token
+    if (process.env.REDIS === 'enabled') {
+      token = await redisClient.get('token')
+      tokenExp = await redisClient.get('tokenExp')
+    }
     if (tokenExp < Date.now()) {
       token = await getToken()
+      if (process.env.REDIS === 'enabled') {
+        await redisClient.set('token', token)
+      }
       if (token) {
         tokenExp = Date.now() + 60 * 60 * 1000
+        if (process.env.REDIS === 'enabled') {
+          await redisClient.set('tokenExp', tokenExp)
+        }
       } else {
         return Promise.reject(new Error('Can not get token'))
       }
@@ -56,11 +67,9 @@ link.interceptors.request.use(
 
 link.interceptors.response.use(
   function (response) {
-    if (process.env.REDIS === 'enabled') {
-      redisClient.set(response.config.url, JSON.stringify(response.data), {
-        EX: 60 * 60 * 12,
-      })
-    }
+    redisClient.set(response.config.url, JSON.stringify(response.data), {
+      EX: 60 * 60 * 12,
+    })
     return response.data
   },
   function (error) {
@@ -69,7 +78,7 @@ link.interceptors.response.use(
 )
 
 const linkWrapper = async (config) => {
-  if (config.method === 'get' && process.env.REDIS === 'enabled') {
+  if (config.method === 'get') {
     const cache = await redisClient.get(config.url)
     if (cache) {
       return JSON.parse(cache)

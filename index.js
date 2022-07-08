@@ -15,12 +15,10 @@ import { getGameInfo } from './psnAPI/game.js'
 
 import redisClient from './redis.js'
 
-if (process.env.REDIS === 'enabled') {
-  await redisClient.connect()
-  await redisClient.set('ps-trothy-test', 'ok')
-  const value = await redisClient.get('ps-trothy-test')
-  console.log('ps-trothy-test', value)
-}
+await redisClient.connect()
+await redisClient.set('ps-trothy-test', 'ok')
+const value = await redisClient.get('ps-trothy-test')
+console.log('ps-trothy-test', value)
 
 const fastify = Fastify({
   logger: true,
