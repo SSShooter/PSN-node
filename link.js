@@ -30,7 +30,7 @@ let tokenExp = 0
 // ;('ja-JP')
 
 export const link = axios.create({
-  baseURL: 'https://m.np.playstation.net/',
+  baseURL: 'https://m.np.playstation.com/',
   timeout: 15000,
   headers: { 'Accept-Language': process.env.LANGUAGE },
 })
