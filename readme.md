@@ -13,7 +13,7 @@ Then access https://ca.account.sony.com/api/v1/ssocookie
 
 ## serverless function
 
-Files in `api` folder is use for serverless function. If you use free database, it may not work well due to insufficient connection.
+Files in `api` folder is used for serverless function. If you use free database, it may not work well due to insufficient connection.
 
 ## Thanks
 

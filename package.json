@@ -10,10 +10,12 @@
   "author": "SSShooter",
   "license": "GPL",
   "dependencies": {
+    "@fastify/cors": "^8.1.1",
+    "@fastify/swagger": "^8.1.0",
+    "@fastify/swagger-ui": "^1.2.0",
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
-    "fastify": "^3.27.2",
-    "fastify-cors": "^6.0.3",
+    "fastify": "^4.9.2",
     "redis": "^4.0.4"
   },
   "type": "module"
