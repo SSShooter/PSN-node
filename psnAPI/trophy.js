@@ -75,7 +75,6 @@ export async function getGameTrophy({
 }
 
 export async function getGameTrophyGroup({ npCommunicationId, npServiceName }) {
-  trophyGroupId = trophyGroupId || 'all'
   const url = `/api/trophy/v1/npCommunicationIds/${npCommunicationId}/trophyGroups`
   var config = {
     method: 'get',

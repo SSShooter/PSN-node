@@ -1,3 +1,7 @@
+## Doc
+
+https://ps-trophy.onrender.com/doc
+
 ## How to deploy
 
 - Complete `.env.sample` and rename to `.env`
@@ -11,7 +15,7 @@ First Login your Sony account: https://my.account.sony.com/
 
 Then access https://ca.account.sony.com/api/v1/ssocookie
 
-## serverless function
+## Serverless function
 
 Files in `api` folder is used for serverless function. If you use free database, it may not work well due to insufficient connection.
 
