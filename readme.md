@@ -11,7 +11,7 @@ P.S. If you don't have a redis instance, try free database (memory limit 30MB) o
 
 ## How to get NPSSO
 
-First Login your Sony account: https://my.account.sony.com/
+First Login your Sony account: https://my.playstation.com
 
 Then access https://ca.account.sony.com/api/v1/ssocookie
 

@@ -15,10 +15,10 @@ async function getCode() {
     },
     params: {
       access_type: 'offline',
-      client_id: 'ac8d161a-d966-4728-b0ea-ffec22f69edc',
-      redirect_uri: 'com.playstation.PlayStationApp://redirect',
+      client_id: '09515159-7237-4370-9b40-3806e67c0891',
+      redirect_uri: 'com.scee.psxandroid.scecompcall://redirect',
       response_type: 'code',
-      scope: 'psn:mobile.v1 psn:clientapp',
+      scope: 'psn:mobile.v2.core psn:clientapp',
     },
     maxRedirects: 0,
   }
@@ -27,6 +27,7 @@ async function getCode() {
   } catch (err) {
     if (err.response) {
       if (err.response.headers.location) {
+        console.log(err.response.headers.location)
         const resUrl = new URL(err.response.headers.location)
         return resUrl.searchParams.get('code')
       } else {
@@ -40,7 +41,7 @@ async function getCode() {
 async function getToken(code) {
   var data = new URLSearchParams({
     code,
-    redirect_uri: 'com.playstation.PlayStationApp://redirect',
+    redirect_uri: 'com.scee.psxandroid.scecompcall://redirect',
     grant_type: 'authorization_code',
     token_format: 'jwt',
   }).toString()
@@ -49,19 +50,21 @@ async function getToken(code) {
     url: '/oauth/token',
     headers: {
       Authorization:
-        'Basic YWM4ZDE2MWEtZDk2Ni00NzI4LWIwZWEtZmZlYzIyZjY5ZWRjOkRFaXhFcVhYQ2RYZHdqMHY=',
+        'Basic MDk1MTUxNTktNzIzNy00MzcwLTliNDAtMzgwNmU2N2MwODkxOnVjUGprYTV0bnRCMktxc1A=',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     data,
   }
 
   const response = await authAjax(config)
+  console.log(response, 'getToken response')
   return response.data.access_token
 }
 
 export default async function auth() {
   console.log('getCode')
   const code = await getCode()
+  console.log('got Code', code)
   if (!code) return null
   console.log('getToken')
   const token = await getToken(code)

@@ -37,21 +37,19 @@ export const link = axios.create({
 
 link.interceptors.request.use(
   async function (config) {
-    // use redis to cache token
-    if (process.env.REDIS === 'enabled') {
-      token = await redisClient.get('token')
-      tokenExp = await redisClient.get('tokenExp')
-    }
+    // use redis to cache token 
+    token = await redisClient.get('token')
+    tokenExp = await redisClient.get('tokenExp')
+
     if (tokenExp < Date.now()) {
       token = await getToken()
-      if (process.env.REDIS === 'enabled') {
-        await redisClient.set('token', token)
-      }
+      console.log('token', token)
+      await redisClient.set('token', token)
+
       if (token) {
         tokenExp = Date.now() + 60 * 60 * 1000
-        if (process.env.REDIS === 'enabled') {
-          await redisClient.set('tokenExp', tokenExp)
-        }
+        await redisClient.set('tokenExp', tokenExp)
+
       } else {
         return Promise.reject(new Error('Can not get token'))
       }
