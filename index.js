@@ -13,9 +13,6 @@ import { schemaGen } from './utils.js'
 import redisClient from './redis.js'
 
 await redisClient.connect()
-await redisClient.set('ps-trothy-test', 'ok')
-const value = await redisClient.get('ps-trothy-test')
-console.log('ps-trothy-test', value)
 
 const fastify = Fastify({
   logger: true,

@@ -2,9 +2,6 @@ import axios from 'axios'
 import getToken from './auth.js'
 import redisClient from './redis.js'
 
-let token = ''
-let tokenExp = 0
-
 // ;('fi-FI')
 // ;('de-DE')
 // ;('en-US')
@@ -37,24 +34,17 @@ export const link = axios.create({
 
 link.interceptors.request.use(
   async function (config) {
-    // use redis to cache token 
-    token = await redisClient.get('token')
-    tokenExp = await redisClient.get('tokenExp')
-
-    if (tokenExp < Date.now()) {
+    // cache token 
+    let token = await redisClient.get('auth:token')
+    if (!token) {
       token = await getToken()
-      console.log('token', token)
-      await redisClient.set('token', token)
-
-      if (token) {
-        tokenExp = Date.now() + 60 * 60 * 1000
-        await redisClient.set('tokenExp', tokenExp)
-
-      } else {
-        return Promise.reject(new Error('Can not get token'))
+      if (!token) {
+        return Promise.reject(new Error('Can not get token, try renewing NPSSO.'))
       }
+      await redisClient.set('auth:token', token, {
+        EX: 60 * 60 * 12,
+      })
     }
-    console.log('setToken')
     config.headers.Authorization = 'Bearer ' + token
     return config
   },
@@ -65,7 +55,8 @@ link.interceptors.request.use(
 
 link.interceptors.response.use(
   function (response) {
-    redisClient.set(response.config.url, JSON.stringify(response.data), {
+    redisClient.set(response.config.url,
+      JSON.stringify(response.data), {
       EX: 60 * 60 * 12,
     })
     return response.data

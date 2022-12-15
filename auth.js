@@ -57,7 +57,6 @@ async function getToken(code) {
   }
 
   const response = await authAjax(config)
-  console.log(response, 'getToken response')
   return response.data.access_token
 }
 
