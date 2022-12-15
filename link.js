@@ -42,7 +42,7 @@ link.interceptors.request.use(
         return Promise.reject(new Error('Can not get token, try renewing NPSSO.'))
       }
       await redisClient.set('auth:token', token, {
-        EX: 60 * 60 * 12,
+        EX: 60 * 60,
       })
     }
     config.headers.Authorization = 'Bearer ' + token
