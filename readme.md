@@ -1,6 +1,6 @@
 # PSN-node
 
-APIs for fetching psn trophy information
+APIs for fetching psn trophy information. Related front-end project, see: [PSN-node-displayer](https://github.com/ssshooter/PSN-node-displayer)
 
 ## Doc
 
