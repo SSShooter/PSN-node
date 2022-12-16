@@ -1,4 +1,4 @@
-import link from '../link.js'
+import { link } from '../link.js'
 
 export async function searchPlayer(data) {
   const config = {
