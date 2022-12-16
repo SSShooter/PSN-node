@@ -1,4 +1,4 @@
-import linkWrapper, { link } from '../link.js'
+import linkWrapper from '../link.js'
 import redisClient from '../redis.js'
 
 export async function getTrophySummary(accountId = 'me') {
@@ -15,18 +15,12 @@ export function getSingleTitle(npCommunicationId) {
 
 export async function getTrophyTitles({ accountId = 'me', offset = 0 }) {
   const url = `/api/trophy/v1/users/${accountId}/trophyTitles?offset=${offset}`
-  const cache = await redisClient.get(url)
-  if (cache) {
-    return JSON.parse(cache)
-  }
   const config = {
     method: 'get',
     url,
   }
-  const data = await link(config)
-  redisClient.set(url, JSON.stringify(data), {
-    NX: true,
-  })
+  const data = await linkWrapper(config)
+  // cache for single game info
   for (let i = 0; i < data.trophyTitles.length; i++) {
     const trophyTitle = data.trophyTitles[i]
     const {
@@ -70,7 +64,11 @@ export async function getGameTrophy({
       npServiceName,
     },
   }
-  return linkWrapper(config)
+  return linkWrapper(
+    config,
+    `trophyDetail:${npCommunicationId}:${trophyGroupId}`, {
+    NX: true,
+  })
 }
 
 export async function getGameTrophyGroup({ npCommunicationId, npServiceName }) {
@@ -82,7 +80,11 @@ export async function getGameTrophyGroup({ npCommunicationId, npServiceName }) {
       npServiceName,
     },
   }
-  return linkWrapper(config)
+  return linkWrapper(
+    config,
+    `trophyGroup:${npCommunicationId}`, {
+    NX: true,
+  })
 }
 
 export async function getEarnedTrophy({
@@ -102,4 +104,11 @@ export async function getEarnedTrophy({
     },
   }
   return linkWrapper(config)
+}
+
+export async function getPickedPlatinum({
+  accountId,
+  npCommunicationIds
+}) {
+  // TODO
 }

@@ -55,10 +55,6 @@ link.interceptors.request.use(
 
 link.interceptors.response.use(
   function (response) {
-    redisClient.set(response.config.url,
-      JSON.stringify(response.data), {
-      EX: 60 * 60 * 12,
-    })
     return response.data
   },
   function (error) {
@@ -66,17 +62,21 @@ link.interceptors.response.use(
   }
 )
 
-const linkWrapper = async (config) => {
-  if (config.method === 'get') {
-    const cache = await redisClient.get(config.url)
-    if (cache) {
-      return JSON.parse(cache)
-    } else {
-      return link(config)
-    }
-  } else {
-    return link(config)
+const defaultOptions = {
+  EX: process.env.CACHE_EXPIRED_TIME || 86400,
+}
+const linkWrapper = async (config, cacheKey, options) => {
+  const cache = await redisClient.get(cacheKey || config.url)
+  if (cache) {
+    return JSON.parse(cache)
   }
+  const data = await link(config)
+  redisClient.set(
+    cacheKey || config.url,
+    JSON.stringify(data),
+    options || defaultOptions
+  )
+  return data
 }
 
 export default linkWrapper
