@@ -1,4 +1,6 @@
 import axios from 'axios'
+import variables from './variables.js'
+
 const authAjax = axios.create({
   baseURL: 'https://ca.account.sony.com/api/authz/v3/',
   timeout: 15000,
@@ -11,7 +13,7 @@ async function getCode() {
     method: 'get',
     url: '/oauth/authorize',
     headers: {
-      Cookie: 'npsso=' + process.env.NPSSO,
+      Cookie: 'npsso=' + variables.NPSSO,
     },
     params: {
       access_type: 'offline',
