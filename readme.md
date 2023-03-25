@@ -11,7 +11,7 @@ https://ps-trophy.onrender.com/doc
 - All data fetched from playstation API will be cached in Redis for reducing requests to playstation API.
 - Those data will be stale after 24 hours, before that you get the cached data.
 - If you don't have a Redis instance, try free one (memory limit 30MB) on [redislabs](https://redislabs.com/)
-- After 2.0.0, `NPSSO` should be setted by `/setNPSSO` api.
+- After 2.0.0, `NPSSO` should be setted by `/configs/npsso` api.
 
 ## How to get NPSSO
 
